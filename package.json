@@ -1,0 +1,19 @@
+{
+  "name": "wintouch-bar",
+  "version": "1.0.0",
+  "description": "WinTouch Bar - control your Windows 11 PC from your iPhone over your local network",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "qrcode": "^1.5.4",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "electron": "^31.3.1"
+  }
+}

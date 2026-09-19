@@ -1,0 +1,1125 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --black: #000000;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-pressed: rgba(255, 255, 255, 0.16);
+  --surface-highlight: rgba(255, 255, 255, 0.09);
+  --border: rgba(255, 255, 255, 0.08);
+  --text-hi: #F5F5F7;
+  --text-mid: #A1A1A6;
+  --text-low: #6E6E73;
+  --accent: #4D9FFF;
+  --accent-glow: rgba(77, 159, 255, 0.35);
+  --danger: #FF5C5C;
+  --green: #3DDC84;
+  --amber: #FFB347;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --touch-target: 44px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font);
+  background: #000;
+  color: var(--text-hi);
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  /* Prevent pull-to-refresh in the immersive strip view */
+}
+
+.hidden { display: none !important; }
+
+.screen {
+  position: relative;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  width: 100%;
+}
+
+/* =========================================================
+   PAIRING SCREEN  (normal dark app look)
+   ========================================================= */
+.pairing-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: calc(var(--safe-top) + 28px) max(20px, var(--safe-right)) calc(var(--safe-bottom) + 28px) max(20px, var(--safe-left));
+  background: linear-gradient(165deg, #0d1015 0%, #10141d 45%, #080a0f 100%);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.brand h1 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-family: var(--font);
+}
+
+.brand-mark {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.strip-segment {
+  width: 6px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+.seg1 { background: var(--amber); }
+.seg2 { background: #FF7043; }
+.seg3 { background: var(--accent); }
+.seg4 { background: var(--green); }
+
+.intro {
+  text-align: center;
+  color: var(--text-mid);
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 0 12px;
+}
+
+.code-input-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+/* Fully visible, real input styled as a 6-digit code box.
+   iOS Safari reliably accepts keystrokes into a visible input. */
+.code-input {
+  width: 300px;
+  max-width: 100%;
+  height: 64px;
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 22px;
+  text-indent: 22px;
+  text-align: center;
+  color: var(--text-hi);
+  background: rgba(255,255,255,0.06);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  outline: none;
+  caret-color: var(--accent);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.code-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.code-input::placeholder {
+  color: rgba(255,255,255,0.18);
+  letter-spacing: 22px;
+  text-indent: 22px;
+  font-weight: 400;
+}
+
+.code-input.error {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.error {
+  text-align: center;
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.hint {
+  text-align: center;
+  color: var(--text-low);
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 0 14px;
+}
+
+.btn-primary {
+  display: block;
+  width: min(100%, 280px);
+  background-color: #4D9FFF;
+  background: linear-gradient(135deg, #4D9FFF, #6D5CFF);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: var(--font);
+  padding: 14px 20px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(77, 130, 255, 0.3);
+  transition: transform 0.1s, opacity 0.15s, background-color 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+}
+
+.btn-primary:disabled {
+  opacity: 0.4;
+  box-shadow: none;
+}
+
+.btn-primary.is-pressed,
+.btn-primary:active {
+  transform: scale(0.96);
+  background-color: #3b8ae6;
+  background: linear-gradient(135deg, #3b8ae6, #5c4ce6);
+  box-shadow: 0 2px 12px rgba(77, 130, 255, 0.2);
+}
+
+/* =========================================================
+   IMMERSIVE CONTROL MODE  (pure black)
+   ========================================================= */
+.controls-screen {
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ephemeral connection pill */
+.conn-indicator {
+  position: absolute;
+  top: calc(var(--safe-top) + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: var(--text-mid);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 40;
+  white-space: nowrap;
+}
+
+.conn-indicator.visible {
+  opacity: 1;
+}
+
+.conn-indicator .c-ic {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.conn-indicator.offline .c-ic {
+  background: var(--danger);
+}
+
+.conn-indicator.offline {
+  color: #ff9a9a;
+}
+
+/* ============ THE STRIP ============ */
+.touchbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 932px;
+  height: 62px;
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.02) 55%, transparent 100%),
+    linear-gradient(180deg, #161616 0%, #0b0b0b 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 2px 18px rgba(0,0,0,0.55);
+  padding: 0 6px;
+  gap: 2px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Zones */
+.zone {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+}
+
+.zone-left {
+  flex-shrink: 0;
+  padding-right: 4px;
+}
+
+.zone-center {
+  flex: 1;
+  justify-content: center;
+  min-width: 0;
+  gap: 8px;
+  padding: 0 6px;
+}
+
+.zone-right {
+  flex-shrink: 0;
+  padding-left: 4px;
+}
+
+/* ============ Generic strip button ============ */
+.tb-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-hi);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    transform 0.12s cubic-bezier(0.2, 0.7, 0.3, 1),
+    background-color 0.1s ease,
+    box-shadow 0.1s ease,
+    opacity 0.12s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+}
+
+.tb-btn svg {
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Pressed state driven via .is-pressed (pointer events) */
+.tb-btn.is-pressed {
+  transform: scale(0.94);
+  background: var(--surface-pressed);
+  box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.1);
+  transition-duration: 0.06s;
+}
+
+.tb-btn.is-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Esc key */
+.esc-key {
+  background: #2a2a2a;
+  border-color: rgba(255,255,255,0.1);
+  min-width: 44px;
+  min-height: 40px;
+  border-radius: 7px;
+}
+
+.esc-key .esc-text {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+  color: #D6D6DB;
+}
+
+/* ============ Center: now playing + media ============ */
+.zone-center {
+  display: flex;
+  align-items: center;
+}
+
+.now-playing {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 220px;
+  text-align: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.np-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-hi);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.np-sub {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-low);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.media-group {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.media-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.play-btn {
+  position: relative;
+}
+
+.play-btn .pause-ic {
+  display: none;
+}
+
+.play-btn.is-playing .play-ic {
+  display: none;
+}
+
+.play-btn.is-playing .pause-ic {
+  display: block;
+}
+
+/* ============ Right: compact system controls ============ */
+.strip-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* ============ EXPANDED CONTROLS ============ */
+.expanded-controls {
+  --ex-bg: #161616;
+  position: absolute;
+  right: max(10px, var(--safe-right));
+  top: calc(var(--safe-top) + 10px);
+  bottom: calc(var(--safe-bottom) + 10px);
+  width: 250px;
+  background: linear-gradient(180deg, #111, #080808);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  transform: translateY(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0.18s;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.expanded-controls.open {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.ex-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ex-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ex-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  width: 54px;
+  flex-shrink: 0;
+}
+
+.ex-ic { flex-shrink: 0; }
+
+.ex-range {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 26px;
+  background: transparent;
+}
+
+.ex-range::-webkit-slider-runnable-track {
+  height: 3px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 2px;
+}
+
+.ex-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #F5F5F7;
+  margin-top: -8.5px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  cursor: pointer;
+  border: none;
+}
+
+.ex-vol-val {
+  color: var(--text-hi);
+  font-size: 13px;
+  font-family: ui-monospace, monospace;
+  min-width: 28px;
+  text-align: right;
+}
+
+.ex-media {
+  justify-content: space-around;
+}
+
+.ex-test {
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.ex-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--text-hi);
+  font-family: var(--font);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 10px;
+  transition:
+    transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.1s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.ex-btn.is-pressed {
+  transform: scale(0.94);
+  background: var(--surface-pressed);
+}
+
+.ex-btn svg { pointer-events: none; flex-shrink: 0; }
+
+.ex-btn .play-ic { display: block; }
+.ex-btn .pause-ic { display: none; }
+
+.ex-btn.is-playing .play-ic { display: none; }
+.ex-btn.is-playing .pause-ic { display: block; }
+
+.ex-close {
+  background: rgba(255,255,255,0.02);
+}
+
+/* ============ Menu FAB ============ */
+.menu-fab {
+  position: fixed;
+  bottom: calc(var(--safe-bottom) + 14px);
+  right: max(16px, var(--safe-right));
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(20,20,20,0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 45;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: transform 0.12s ease, background 0.12s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.menu-fab.is-pressed {
+  transform: scale(0.9);
+  background: rgba(255,255,255,0.12);
+}
+
+/* ============ Bottom sheet ============ */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 60;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.sheet-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bottom-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #1c1c1e;
+  border-radius: 16px 16px 0 0;
+  padding: 10px 0 calc(env(safe-area-inset-bottom, 0px) + 10px);
+  z-index: 70;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+}
+
+.bottom-sheet.show {
+  transform: translateY(0);
+}
+
+.sheet-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-hi);
+  font-family: var(--font);
+  font-size: 15px;
+  padding: 13px 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.sheet-item:active {
+  background: rgba(255,255,255,0.08);
+}
+
+.sheet-danger {
+  color: var(--danger);
+}
+
+.sheet-item svg {
+  flex-shrink: 0;
+}
+
+/* ============ Pairing info dialog ============ */
+.pair-info {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.94);
+  background: #1e1e20;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 22px;
+  width: min(90%, 340px);
+  z-index: 75;
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pair-info.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  visibility: visible;
+}
+
+.pair-info-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.pair-info-head h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--text-mid);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+
+.pair-info-label {
+  font-size: 11px;
+  color: var(--text-low);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
+  margin-top: 12px;
+}
+
+.pair-info-code {
+  display: block;
+  font-family: ui-monospace, monospace;
+  font-size: 14px;
+  color: var(--text-hi);
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 10px 12px;
+  word-break: break-all;
+}
+
+.pair-info-code.mono {
+  font-size: 18px;
+  letter-spacing: 4px;
+}
+
+/* =========================================================
+   PORTRAIT MODE (normal tabular dashboard fallback)
+   ========================================================= */
+.portrait-mode {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(165deg, #0d1015, #10141d 45%, #08090c);
+  padding: calc(var(--safe-top) + 12px) max(14px, var(--safe-right)) calc(var(--safe-bottom) + 16px) max(14px, var(--safe-left));
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.portrait-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.brand.small {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand.small h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.portrait-groups {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.group {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-low);
+  margin-bottom: 12px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.row + .row { margin-top: 8px; }
+
+.btn-action {
+  flex: 1;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-hi);
+  font-family: var(--font);
+  cursor: pointer;
+  transition: transform 0.1s, background 0.1s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.btn-action:active {
+  transform: scale(0.95);
+  background: rgba(255,255,255,0.14);
+}
+
+.btn-action .icon {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.btn-action .label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-mid);
+  letter-spacing: 0.2px;
+}
+
+.btn-danger {
+  border-color: rgba(255,92,92,0.25);
+}
+
+.btn-danger .label { color: #FF9A9A; }
+
+.action-status {
+  text-align: center;
+  color: var(--green);
+  font-size: 13px;
+  min-height: 18px;
+  margin: 4px 0;
+}
+
+.action-status.error { color: var(--danger); }
+
+footer.footer {
+  text-align: center;
+  color: var(--text-low);
+  font-size: 11px;
+  padding: 10px 0 20px;
+}
+
+/* =========================================================
+   RESPONSIVE / SAFE AREA TWEAKS
+   ========================================================= */
+@media (max-width: 480px) and (orientation: portrait) {
+  .touchbar {
+    height: 54px;
+  }
+  .tb-btn {
+    min-width: 40px;
+    min-height: 40px;
+  }
+  .esc-key {
+    min-width: 40px;
+    min-height: 36px;
+  }
+  .now-playing {
+    max-width: 130px;
+  }
+}
+
+/* When in standalone PWA mode */
+@media (display-mode: standalone) {
+  .controls-screen {
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+  }
+}
+
+/* Prevent horizontal scroll */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+/* =========================================================
+   TOUCH BAR FIDELITY v2 - direct-feel controls
+   Flat, monochrome, immediate. No glow, ripple, spring or bounce.
+   ========================================================= */
+
+/* Flatter OLED-style strip */
+.touchbar {
+  height: 68px;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: none;
+  border-radius: 8px;
+  gap: 0;
+  touch-action: manipulation;
+}
+
+.zone-center { position: relative; gap: 4px; }
+
+/* Center views: compact app area vs expanded control strip */
+.center-view { display: flex; align-items: center; justify-content: center; }
+.center-default {
+  flex-direction: column;
+  gap: 1px;
+  height: 100%;
+  width: 100%;
+  opacity: 1;
+  transition: opacity 90ms linear;
+}
+.center-expanded {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 110ms linear;
+}
+.zone-center.expanded .center-default { opacity: 0; pointer-events: none; }
+.zone-center.expanded .center-expanded { opacity: 1; pointer-events: auto; }
+
+/* When real media is present the title yields to the scrubber */
+.zone-center.has-media .now-playing { display: none; }
+
+.ex-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  height: 100%;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.ex-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 7px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-hi);
+  cursor: pointer;
+  transition: background 70ms linear;
+}
+.ex-btn.is-pressed { background: rgba(255, 255, 255, 0.16); }
+.ex-btn.ex-play .pause-ic { display: none; }
+.ex-btn.ex-play.is-playing .play-ic { display: none; }
+.ex-btn.ex-play.is-playing .pause-ic { display: block; }
+.ex-btn.ex-mute.is-muted { background: rgba(255, 92, 92, 0.18); border-color: rgba(255, 92, 92, 0.25); }
+
+/* Immediate press feedback (one frame, 70ms) */
+.tb-btn.is-pressed { background: rgba(255, 255, 255, 0.18); }
+/* ============ Inline compact slider (volume / brightness) ============ */
+.sc {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  touch-action: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: background 80ms linear, border-color 80ms linear;
+}
+.sc-pressed,
+.sc-dragging {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.sc-hit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.sc-icon { display: block; pointer-events: none; }
+
+/* Track reveals from the icon edge in 80ms and overlays to the left */
+.sc-trackwrap {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  transition: width 80ms linear;   /* 60-90ms maximum */
+}
+.sc-open .sc-trackwrap { width: 92px; }
+
+.sc-track {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 0;   /* flat, Touch Bar style */
+}
+.sc-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: #F5F5F7;
+  border-radius: 0;
+}
+.sc-thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: #F5F5F7;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 80ms linear;
+}
+.sc-open .sc-thumb,
+.sc-dragging .sc-thumb { opacity: 1; }
+
+/* Dynamic speaker icon (monochrome, original inline SVG) */
+.sc .vol-x1,
+.sc .vol-x2 { display: none; }
+.sc .vol-w1,
+.sc .vol-w2 { display: block; }
+.sc.v-off .vol-w1,
+.sc.v-off .vol-w2 { display: none; }
+.sc.v-off .vol-x1,
+.sc.v-off .vol-x2 { display: block; }
+.sc.v-low .vol-w2 { display: none; }
+/* ============ Media seek scrubber (direct feel, rAF driven) ============ */
+.seek-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 10px;
+  min-height: 18px;
+}
+.seek-row[hidden] { display: none !important; }
+
+.seek-track {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 0;
+  touch-action: none;
+  cursor: pointer;
+}
+.seek-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: #F5F5F7;
+  border-radius: 0;
+}
+.seek-thumb {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: #F5F5F7;
+  transform: translateY(-50%);
+  transition: none;   /* never animate the thumb while dragging */
+}
+.seek-pos {
+  font-size: 10px;
+  color: var(--text-mid);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+/* ============ Flat immersive background ============ */
+.controls-screen { background: #000; }
+body { background: #000; }

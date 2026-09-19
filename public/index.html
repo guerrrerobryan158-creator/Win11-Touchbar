@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WinTouch Bar">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <title>WinTouch Bar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ============ Pairing Screen ============ -->
+  <main id="pairingScreen" class="screen pairing-screen">
+    <div class="brand">
+      <div class="brand-mark">
+        <span class="strip-segment seg1"></span>
+        <span class="strip-segment seg2"></span>
+        <span class="strip-segment seg3"></span>
+        <span class="strip-segment seg4"></span>
+      </div>
+      <h1>WinTouch Bar</h1>
+    </div>
+
+    <p class="intro">Enter the 6-digit code shown in the WinTouch Bar window on your PC.</p>
+
+    <div class="code-input-wrap" id="codeInputWrap">
+      <input id="codeHidden" class="code-input" type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" maxlength="6" aria-label="Pairing code" placeholder="······">
+    </div>
+
+    <p id="pairError" class="error hidden">Incorrect code. Try again.</p>
+
+    <button id="pairBtn" class="btn btn-primary">Connect</button>
+
+    <p class="hint">Make sure your iPhone is on the same Wi-Fi network as your PC.<br><em>For the closest classic control-strip layout, use iPhone landscape orientation.</em></p>
+  </main>
+
+  <!-- ============ Immersive Touch-Bar Control Mode ============ -->
+  <main id="controlsScreen" class="screen controls-screen hidden">
+
+    <!-- Tiny ephemeral connection pill -->
+    <div id="connIndicator" class="conn-indicator" aria-live="polite">
+      <span class="c-ic"></span>
+      <span id="connText">Connected</span>
+    </div>
+
+    <!-- ======== Primary hardware-style strip ====== -->
+    <section class="touchbar" id="touchbar" role="toolbar" aria-label="WinTouch Bar controls">
+
+      <!-- Esc zone -->
+      <div class="zone zone-left">
+        <button class="tb-btn esc-key" id="escKey" data-action="test.escape" aria-label="Escape (test)" title="Escape">
+          <span class="esc-text">esc</span>
+        </button>
+      </div>
+
+      <!-- App / media flex region -->
+      <div class="zone zone-center" id="appCenter">
+        <div class="center-view center-default" id="centerDefault">
+        <div class="now-playing">
+          <span class="np-title" id="npTitle">WinTouch Bar</span>
+          <span class="np-sub" id="npSub">Not Playing</span>
+        </div>
+        <div class="media-group">
+          <button class="tb-btn media-btn" data-action="media_prev" aria-label="Previous track" title="Previous">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F5F5F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 L10 12 L18 18 Z"/><path d="M6 5 L6 19"/></svg>
+          </button>
+          <button class="tb-btn media-btn play-btn" data-action="media_play_pause" aria-label="Play or pause" title="Play / Pause">
+            <svg class="play-ic" viewBox="0 0 24 24" width="24" height="24" fill="#F5F5F7" aria-hidden="true"><path d="M8 5 L18 12 L8 19 Z"/></svg>
+            <svg class="pause-ic" viewBox="0 0 24 24" width="24" height="24" fill="#F5F5F7" aria-hidden="true"><rect x="7" y="5" width="3" height="14" rx="1"/><rect x="14" y="5" width="3" height="14" rx="1"/></svg>
+          </button>
+          <button class="tb-btn media-btn" data-action="media_next" aria-label="Next track" title="Next">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F5F5F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 5 L14 12 L6 19 Z"/><path d="M18 5 L18 19"/></svg>
+          </button>
+        </div>
+      <div class="seek-row" id="seekRow" hidden>
+            <div class="seek-track" id="seekTrack" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="1000" tabindex="0">
+              <div class="seek-fill" id="seekFill"></div>
+              <div class="seek-thumb" id="seekThumb"></div>
+            </div>
+            <span class="seek-pos" id="seekPos">–:––</span>
+          </div>
+        </div>
+
+        <!-- Expanded control strip: replaces the center app area, one line -->
+        <div class="center-view center-expanded" id="centerExpanded" aria-label="Expanded controls">
+          <div class="ex-row">
+            <div class="sc sc-inline" id="expBrightCtrl" role="slider" aria-label="Brightness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+              <div class="sc-hit">
+                <svg class="sc-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2 L12 4"/><path d="M12 20 L12 22"/><path d="M2 12 L4 12"/><path d="M20 12 L22 12"/><path d="M4.93 4.93 L6.34 6.34"/><path d="M17.66 17.66 L19.07 19.07"/><path d="M19.07 4.93 L17.66 6.34"/><path d="M6.34 17.66 L4.93 19.07"/></svg>
+                <div class="sc-trackwrap"><div class="sc-track"><div class="sc-fill"></div><div class="sc-thumb"></div></div></div>
+              </div>
+            </div>
+            <button class="ex-btn ex-mute" id="muteBtn" aria-label="Mute" title="Mute">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9 L8 9 L14 4 L14 20 L8 15 L4 15 Z" fill="rgba(245,245,247,0.85)"/><path d="M16 9 L21 14"/><path d="M21 9 L16 14"/></svg>
+            </button>
+            <button class="ex-btn media-btn" data-action="media_prev" aria-label="Previous track" title="Previous">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F5F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 L10 12 L18 18 Z"/><path d="M6 5 L6 19"/></svg>
+            </button>
+            <button class="ex-btn media-btn ex-play" data-action="media_play_pause" aria-label="Play or pause" title="Play / Pause">
+              <svg class="play-ic" viewBox="0 0 24 24" width="20" height="20" fill="#F5F5F7" aria-hidden="true"><path d="M8 5 L18 12 L8 19 Z"/></svg>
+              <svg class="pause-ic" viewBox="0 0 24 24" width="20" height="20" fill="#F5F5F7" aria-hidden="true"><rect x="7" y="5" width="3" height="14" rx="1"/><rect x="14" y="5" width="3" height="14" rx="1"/></svg>
+            </button>
+            <button class="ex-btn media-btn" data-action="media_next" aria-label="Next track" title="Next">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F5F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 5 L14 12 L6 19 Z"/><path d="M18 5 L18 19"/></svg>
+            </button>
+            <div class="sc sc-inline" id="expVolCtrl" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+              <div class="sc-hit">
+                <svg class="sc-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path class="vol-speaker" d="M4 9 L8 9 L14 4 L14 20 L8 15 L4 15 Z" fill="rgba(245,245,247,0.85)" stroke="none"/>
+                  <path class="vol-wave vol-w1" d="M16 9 C18 12 18 12 16 15"/>
+                  <path class="vol-wave vol-w2" d="M19 6 C22 10 22 14 19 18"/>
+                  <path class="vol-x1" d="M16 10 L20 14" stroke="#F5F5F7" stroke-width="1.8"/>
+                  <path class="vol-x2" d="M20 10 L16 14" stroke="#F5F5F7" stroke-width="1.8"/>
+                </svg>
+                <div class="sc-trackwrap"><div class="sc-track"><div class="sc-fill"></div><div class="sc-thumb"></div></div></div>
+              </div>
+            </div>
+            <button class="ex-btn ex-close" id="closeExpandBtn" aria-label="Collapse controls" title="Collapse">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F5F7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15 L12 9 L6 15"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compact System Control Strip -->
+      <div class="zone zone-right">
+        <div class="sc" id="brightnessCtrl" role="slider" aria-label="Brightness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+          <div class="sc-hit">
+            <svg class="sc-icon" id="brightnessIcon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2 L12 4"/><path d="M12 20 L12 22"/><path d="M2 12 L4 12"/><path d="M20 12 L22 12"/><path d="M4.93 4.93 L6.34 6.34"/><path d="M17.66 17.66 L19.07 19.07"/><path d="M19.07 4.93 L17.66 6.34"/><path d="M6.34 17.66 L4.93 19.07"/></svg>
+            <div class="sc-trackwrap"><div class="sc-track"><div class="sc-fill"></div><div class="sc-thumb"></div></div></div>
+          </div>
+        </div>
+        <div class="sc" id="volumeCtrl" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+          <div class="sc-hit">
+            <svg class="sc-icon" id="volumeIcon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path class="vol-speaker" d="M4 9 L8 9 L14 4 L14 20 L8 15 L4 15 Z" fill="rgba(245,245,247,0.85)" stroke="none"/>
+              <path class="vol-wave vol-w1" d="M16 9 C18 12 18 12 16 15"/>
+              <path class="vol-wave vol-w2" d="M19 6 C22 10 22 14 19 18"/>
+              <path class="vol-x1" d="M16 10 L20 14" stroke="#F5F5F7" stroke-width="1.8"/>
+              <path class="vol-x2" d="M20 10 L16 14" stroke="#F5F5F7" stroke-width="1.8"/>
+            </svg>
+            <div class="sc-trackwrap"><div class="sc-track"><div class="sc-fill"></div><div class="sc-thumb"></div></div></div>
+          </div>
+        </div>
+        <button class="tb-btn strip-btn" id="chevronBtn" data-expand aria-label="Expand controls" aria-expanded="false" title="Expand controls">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#A1A1A6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9 L12 15 L18 9"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- (The old overlay expanded-controls panel was removed; expanded controls
+         now live inline in #centerExpanded, which replaces the center area.) -->
+
+    <!-- Subtle settings affordance -->
+    <button class="menu-fab" id="menuBtn" aria-haspopup="dialog" aria-label="Options" title="Options">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+    </button>
+
+    <!-- Bottom sheet -->
+    <div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
+    <section class="bottom-sheet" id="bottomSheet" hidden aria-label="Options">
+      <button class="sheet-item" id="pairingDetailsBtn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21 L16.5 16.5"/></svg>
+        <span>Pairing details</span>
+      </button>
+      <button class="sheet-item" id="togglePortraitBtn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M12 17 L12 17.01"/></svg>
+        <span>Portrait controls</span>
+      </button>
+      <button class="sheet-item" id="unpairBtn" aria-label="Disconnect device">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FF5C5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15 L12 9 L6 15"/></svg>
+        <span class="sheet-danger">Disconnect device</span>
+      </button>
+    </section>
+  </main>
+
+  <!-- ========== Portrait-friendly controls ========== -->
+  <main id="portraitMode" class="screen portrait-mode hidden">
+
+    <header class="portrait-header">
+      <div class="brand small">
+        <div class="brand-mark">
+          <span class="strip-segment seg1"></span>
+          <span class="strip-segment seg2"></span>
+          <span class="strip-segment seg3"></span>
+          <span class="strip-segment seg4"></span>
+        </div>
+        <h2>WinTouch Bar</h2>
+      </div>
+      <button id="backToStripBtn" class="link-btn" aria-label="Back to strip">Back to strip</button>
+    </header>
+
+    <div class="portrait-groups">
+      <!-- Volume -->
+      <section class="group">
+        <h3 class="group-title">Volume</h3>
+        <div class="row">
+          <button class="btn btn-action" data-action="volume_down" aria-label="Volume down"><span class="icon">−</span><span class="label">Vol Down</span></button>
+          <button class="btn btn-action" data-action="volume_mute" aria-label="Mute"><span class="icon">⊘</span><span class="label">Mute</span></button>
+          <button class="btn btn-action" data-action="volume_up" aria-label="Volume up"><span class="icon">+</span><span class="label">Vol Up</span></button>
+        </div>
+      </section>
+
+      <!-- Media -->
+      <section class="group">
+        <h3 class="group-title">Media</h3>
+        <div class="row">
+          <button class="btn btn-action" data-action="media_prev" aria-label="Previous track"><span class="icon">◂</span><span class="label">Prev</span></button>
+          <button class="btn btn-action play-btn" data-action="media_play_pause" aria-label="Play or pause"><span class="icon">▮▮</span><span class="label">Play</span></button>
+          <button class="btn btn-action" data-action="media_next" aria-label="Next track"><span class="icon">▸</span><span class="label">Next</span></button>
+        </div>
+      </section>
+
+      <!-- Brightness -->
+      <section class="group">
+        <h3 class="group-title">Brightness</h3>
+        <div class="row">
+          <button class="btn btn-action" data-action="brightness_down" aria-label="Brightness down"><span class="icon">◑</span><span class="label">Dim</span></button>
+          <button class="btn btn-action" data-action="brightness_up" aria-label="Brightness up"><span class="icon">☀</span><span class="label">Bright</span></button>
+          <button class="btn btn-action" data-action="turn_off_display" aria-label="Turn off display"><span class="icon">⏻</span><span class="label">Screen Off</span></button>
+        </div>
+      </section>
+
+      <!-- System -->
+      <section class="group">
+        <h3 class="group-title">System</h3>
+        <div class="row">
+          <button class="btn btn-action" data-action="lock" aria-label="Lock"><span class="icon">⚿</span><span class="label">Lock</span></button>
+          <button class="btn btn-action" data-action="sleep" aria-label="Sleep"><span class="icon">☾</span><span class="label">Sleep</span></button>
+          <button class="btn btn-action" data-action="empty_recycle_bin" aria-label="Empty recycle bin"><span class="icon">🗑</span><span class="label">Empty Bin</span></button>
+        </div>
+        <div class="row">
+          <button class="btn btn-action" data-action="launch_notepad" aria-label="Launch notepad"><span class="icon">📝</span><span class="label">Notepad</span></button>
+          <button class="btn btn-action" data-action="launch_calculator" aria-label="Launch calculator"><span class="icon">🧮</span><span class="label">Calculator</span></button>
+          <button class="btn btn-action" data-action="launch_cmd" aria-label="Launch command prompt"><span class="icon">▧</span><span class="label">Terminal</span></button>
+        </div>
+      </section>
+
+      <!-- Power -->
+      <section class="group power-group">
+        <h3 class="group-title">Power</h3>
+        <div class="row">
+          <button class="btn btn-action btn-danger" data-action="restart" aria-label="Restart"><span class="icon">↻</span><span class="label">Restart</span></button>
+          <button class="btn btn-action btn-danger" data-action="shutdown" aria-label="Shut down"><span class="icon">⏻</span><span class="label">Shut Down</span></button>
+          <button class="btn btn-action btn-danger" data-action="logoff" aria-label="Log off"><span class="icon">⇤</span><span class="label">Log Off</span></button>
+        </div>
+      </section>
+
+      <p id="actionStatus" class="action-status" role="status"></p>
+    </div>
+
+    <footer class="footer">
+      <span>WinTouch Bar · Connected to your PC</span>
+    </footer>
+  </main>
+
+  <!-- Pairing details modal -->
+  <div class="sheet-backdrop" id="pairBackdrop" hidden></div>
+  <section class="pair-info" id="pairInfo" hidden role="dialog" aria-label="Pairing details">
+    <div class="pair-info-head">
+      <h2>Pairing details</h2>
+      <button class="link-btn" id="closePairInfo" aria-label="Close">✕</button>
+    </div>
+    <p class="pair-info-label">Address</p>
+    <code id="pairUrl" class="pair-info-code">-</code>
+    <p class="pair-info-label">Pairing code</p>
+    <div id="pairInfoCode" class="pair-info-code mono">------</div>
+    <p class="hint">The code changes every time the app starts.</p>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you use single quotes but the formatter convert he them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'">
+  <title>WinTouch Bar</title>
+  <link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark">
+          <span class="strip-segment seg1"></span>
+          <span class="strip-segment seg2"></span>
+          <span class="strip-segment seg3"></span>
+          <span class="strip-segment seg4"></span>
+        </div>
+        <h1>WinTouch Bar</h1>
+      </div>
+      <div class="server-status" id="serverStatus">
+        <span class="status-dot"></span>
+        <span id="serverStatusText">Starting…</span>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- Left column: QR + pairing -->
+      <div class="left-col">
+        <section class="panel connect-panel">
+          <h2>Connect your iPhone</h2>
+
+          <div class="qr-wrap">
+            <div id="qrPlaceholder" class="qr-placeholder">Loading QR…</div>
+            <img id="qrImage" alt="QR code" class="qr-image hidden">
+          </div>
+
+          <div class="url-row">
+            <input id="lanUrl" class="url-input" readonly>
+            <button id="copyBtn" class="btn btn-small">Copy</button>
+          </div>
+
+          <div class="pairing-box">
+            <span class="pairing-label">Pairing code</span>
+            <div id="pairingCode" class="pairing-code">------</div>
+            <p class="hint">The code changes every time the app starts.</p>
+          </div>
+
+          <div class="paired-devices">
+            <h3>Paired devices</h3>
+            <ul id="deviceList" class="device-list">
+              <li class="empty-device">No devices paired yet.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Phone Control Preview -->
+        <section class="panel preview-panel">
+          <div class="preview-head">
+            <h2>Phone Control Preview</h2>
+            <span class="preview-note">Non-interactive</span>
+          </div>
+          <div class="preview-phone">
+            <div class="preview-notch"></div>
+            <div class="preview-strip">
+              <div class="pv-zone pv-left">
+                <span class="pv-esc">esc</span>
+              </div>
+              <div class="pv-zone pv-center">
+                <div class="pv-now">
+                  <span class="pv-title">WinTouch Bar</span>
+                  <span class="pv-sub">Not Playing</span>
+                </div>
+                <div class="pv-media">
+                  <span class="pv-btn pv-media-btn" aria-hidden="true">◂</span>
+                  <span class="pv-btn pv-play" aria-hidden="true">▶</span>
+                  <span class="pv-btn pv-media-btn" aria-hidden="true">▸</span>
+                </div>
+              </div>
+              <div class="pv-zone pv-right">
+                <span class="pv-btn" aria-hidden="true">⌄</span>
+                <span class="pv-btn pv-ic-small" aria-hidden="true">☀</span>
+                <span class="pv-btn pv-ic-small" aria-hidden="true">☀</span>
+                <span class="pv-btn" aria-hidden="true">🔇</span>
+                <span class="pv-btn" aria-hidden="true">🔊</span>
+              </div>
+            </div>
+            <div class="preview-home"></div>
+          </div>
+          <p class="preview-caption">Mirrors the compact control strip shown on your paired iPhone in landscape.</p>
+        </section>
+      </div>
+
+      <!-- Right column: activity log + local latency diagnostics -->
+      <div class="right-col">
+      <section class="panel log-panel">
+        <h2>Activity log</h2>
+        <div id="activityLog" class="log-container">
+          <div class="empty-log">Waiting for activity…</div>
+        </div>
+      </section>
+
+      <!-- Local-only latency diagnostics (Electron host only, OFF by default) -->
+      <section class="panel diag-panel">
+        <div class="diag-head">
+          <h2>Latency diagnostics</h2>
+          <div class="diag-actions">
+            <button id="diagToggle" class="btn btn-small" aria-pressed="false">Enable diagnostics</button>
+            <button id="diagCopy" class="btn btn-small">Copy diagnostics</button>
+            <button id="diagClear" class="btn btn-small">Clear</button>
+          </div>
+        </div>
+        <p class="diag-note" id="diagNote">Off by default · measured locally only · most recent 100 actions · nothing is sent anywhere</p>
+        <div class="diag-scroll">
+          <table class="diag-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Action ID</th>
+                <th>Request ID</th>
+                <th>Client</th>
+                <th>Local ms</th>
+                <th>Up est ms</th>
+                <th>Validate ms</th>
+                <th>Provider ms</th>
+                <th>Server→phone ms</th>
+                <th>Total ms</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody id="diagBody">
+              <tr><td colspan="11" class="diag-empty">Enable diagnostics to record latency for every action.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span>Express server on port 8787 · WebSocket enabled</span>
+    </footer>
+  </div>
+
+  <script src="desktop.js"></script>
+</body>
+</html>
